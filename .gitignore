@@ -43,6 +43,8 @@
 
 
 # build folder
-.build
-
+/build/
+/.idea/
+/compile_commands.json
+/.cache/
 
