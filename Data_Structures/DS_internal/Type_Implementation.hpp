@@ -41,7 +41,7 @@ namespace DS
     requires std::is_fundamental_v<Type>
   struct static_Type : Type_Implementation<REF, index, Type, void>
   {
-    using Base = Type_Implementation<REF, index, Type, s64>;
+    using Base = Type_Implementation<REF, index, Type, i64>;
     [[nodiscard]] inline constexpr u64 allocate()
     {
       ;

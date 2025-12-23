@@ -16,7 +16,7 @@ namespace DS
   public:
     Pointer_array()
     {
-      for ( auto i = 0; i < sizeof...( T ); i++ )
+      for ( sz i = 0; i < sizeof...( T ); i++ )
       {
         Pointer_Array[ i ] = nullptr;
       }

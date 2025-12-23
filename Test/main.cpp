@@ -3,15 +3,14 @@
 #include <iostream>
 #include <utility>
 
-void prnt( u64 index, auto &ref )
+void prnt( u64 index, const auto &ref )
 {
-  std::cout << typeid( ref ).name() << "\t" << ref;
+  std::cout << typeid( ref ).name() << "\t" << ref << "\n";
 }
 template <u64... I>
 inline void loop( auto &d, std::index_sequence<I...> )
 {
   //  Trace_
-  s64 i;
 
   ( ( d.template Type<I>::data() = I, //
       prnt( I, d.template Type<I>::data() ) ),

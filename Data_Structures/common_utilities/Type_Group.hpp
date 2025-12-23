@@ -58,8 +58,8 @@ namespace TS
 
     static consteval auto skip_void_in_list()
     {
-      std::array<s64, sizeof...( T ) + 1> v_list;
-      s64                                 i = 1;
+      std::array<i64, sizeof...( T ) + 1> v_list;
+      i64                                 i = 1;
       v_list[ 0 ] = 0;
       ( ( ( !std::is_void_v<typename T::Type_> )
               ? ( v_list[ i++ ] = 1, v_list[ 0 ] += 1 )
@@ -67,7 +67,7 @@ namespace TS
         ... );
       return v_list;
     }
-    static consteval s64 get_nonvoid_type_count()
+    static consteval i64 get_nonvoid_type_count()
     {
       return skip_void_in_list()[ 0 ];
     }

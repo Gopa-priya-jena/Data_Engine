@@ -1,8 +1,8 @@
 #pragma once
+#include <TYPE.hpp>
 #include <common_utilities/Optimized_Tuple_helper_Templates.hpp>
 #include <common_utilities/Type_Group.hpp>
 #include <utility>
-
 namespace DS
 {
   template <class... T>
@@ -35,7 +35,7 @@ namespace DS
     using get_info_type_at = std::tuple_element<i, info_tuple>::type;
 
     template <u64... i>
-    static consteval const std::array<u64, sizeof...( T )>
+    static consteval std::array<u64, sizeof...( T )>
     key_map( std::index_sequence<i...> )
     {
       std::array<u64, sizeof...( T )> a;

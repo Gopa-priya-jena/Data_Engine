@@ -76,13 +76,16 @@ namespace DS
             u64, meta_object::get_nonvoid_type_count()>{} );
       }
     }
+
     using _sgmetadata = decltype( get_metadata<SGm_object, Metadata>() );
+
     struct MG_processing
     {
       using base_grp = TS::Type_Group<Base_Types...>;
       using design_info = Design_Info::mg_design;
       template <typename... T>
       using mg_mobj = m_object<MG_Base, T...>;
+
       template <u64... i>
       static consteval auto make_mobject( std::integer_sequence<u64, i...> )
       {
@@ -93,7 +96,7 @@ namespace DS
       static consteval auto gen_arr()
       {
         std::array<u64, grp_sz> ele_index;
-        for ( auto i = 0, j = 0; i < design_info::ele_group_table.size(); i++ )
+        for ( sz i = 0, j = 0; i < design_info::ele_group_table.size(); i++ )
         {
           if ( G == design_info::ele_group_table[ i ] )
             ele_index[ j++ ] = i;
@@ -111,6 +114,7 @@ namespace DS
       {
         return make_mobject( Grp_index<G>{} );
       }
+
       template <u64 G>
       static consteval auto group_mdata()
       {
@@ -119,11 +123,13 @@ namespace DS
             decltype( gen_mobject<G>() ),
             typename design_info::group_info::template Type<G>::C_Type>();
       }
+
       template <u64... i>
       static consteval auto metadata_list( std::index_sequence<i...> )
       {
         return TS::Type_Group<decltype( group_mdata<i>() )...>{};
       }
+
       using mete_typelist = decltype( metadata_list(
           std::make_index_sequence<design_info::group_count>{} ) );
     };
@@ -167,6 +173,7 @@ namespace DS
         auto ptr = reinterpret_cast<DS_Type *>( allocator.allocate( Size ) );
         return new ( ptr ) DS_Type( Size, element_size );
       }
+
       void Dealloc( DS_Type *ptr )
       {
         auto sz = ptr->HEADER.Body_size;
@@ -204,45 +211,47 @@ namespace DS
         ;
         return Data_Structure->HEADER.Metadata.E_Data.template get<N>();
       }
+
       Single_Group_Data_Structure_Design()
       {
-
         Data_Structure = Allocate();
         Data_Structure->Set_Zero_all();
         ( ( SG_Base<Base_Types>::Initialize() ), ... );
       }
+
       ~Single_Group_Data_Structure_Design()
       {
         Dealloc( Data_Structure );
         ( ( SG_Base<Base_Types>::Terminate() ), ... );
       }
     };
+
     class SOA_Design : public SOA_Base<Base_Types>...
     {
       using Base_group = Base_group_gen<SOA_Base<Base_Types>...>;
       using pointer_type = TS::Type_Group<Data_Struture_Storage_Block<
-          1, u8, 0, typename SOA_Base<Base_Types>::metadata>...>;
+          1, u8, Alignment, typename SOA_Base<Base_Types>::metadata>...>;
 
       Pointer_array<Data_Struture_Storage_Block<
-          1, u8, 0, typename SOA_Base<Base_Types>::metadata> *...>
+          1, u8, Alignment, typename SOA_Base<Base_Types>::metadata> *...>
                           Data_Structure_Array;
       TS::maybe<Metadata> common_metadata;
       Allocator           allocator;
+
       template <u64 I>
       auto Allocate()
       {
-        u64                       BODY_Size = 0;
         std::array<alloc_info, 1> element_size;
-        auto                      i = 0;
         element_size[ 0 ].sz = Base_group::template Type<I>::allocate();
         u64 Size =
             ( sizeof( decltype( pointer_type::template Type<I>::HEADER ) ) +
               element_size[ 0 ].sz );
 
-        auto ptr = reinterpret_cast<pointer_type::template Type<I> *>(
+        auto ptr = static_cast<pointer_type::template Type<I> *>(
             std::aligned_alloc( Alignment, Size ) );
         return new ( ptr ) pointer_type::template Type<I>( Size, element_size );
       }
+
       void Dealloc( auto &Data )
       {
         auto sz = Data->HEADER.Body_size;
@@ -267,6 +276,7 @@ namespace DS
         return Data_Structure_Array.template ptr<Index>()
             ->template Acess_Size<0>();
       }
+
       // a potential bug
       template <u64 N>
       inline TS::Ref_get<typename Base_group::template Type<N>::metadata>::Type
@@ -277,6 +287,7 @@ namespace DS
                            typename Base_group::template Type<N>::metadata> )
           return Data_Structure_Array.template ptr<N>()->HEADER.Metadata;
       }
+
       template <u64 N>
       inline TS::Ref_get<typename Base_group::template Type<N>::metadata>::Type
       acess_CommonMetadata()
@@ -285,6 +296,7 @@ namespace DS
         if constexpr ( !std::is_void_v<Metadata> )
           return &common_metadata;
       }
+
       SOA_Design()
       {
         [ & ]<u64... i>( std::index_sequence<i...> )
@@ -293,6 +305,7 @@ namespace DS
         }( std::make_integer_sequence<u64, sizeof...( Base_Types )>{} );
         ( ( SOA_Base<Base_Types>::Initialize() ), ... );
       }
+
       ~SOA_Design()
       {
         [ & ]<u64... i>( std::index_sequence<i...> )
@@ -304,8 +317,9 @@ namespace DS
         ( ( SOA_Base<Base_Types>::Terminate() ), ... );
       }
     };
+
     // NOTE: where multiple grouping is needed for class
-    //  and have differ allocation and access pattern
+    //  and have differed allocation and access pattern
 
     class Multi_Group_Data_Structure_Design : public MG_Base<Base_Types>...
     {
@@ -322,6 +336,7 @@ namespace DS
       {
         return Pointer_array<pointer_type<i> *...>{};
       }
+
       template <u64 G>
       using Grp_elements = MG_processing::template Grp_index<G>;
       using Pointer_Array = decltype( ptr_type(
@@ -334,7 +349,6 @@ namespace DS
       template <u64 G>
       auto Allocate()
       {
-
         auto G_alloc =
             [ this ]<u64... I>(
                 std::array<alloc_info,
@@ -364,8 +378,7 @@ namespace DS
         };
 
         std::array<alloc_info, MG_processing::design_info::group_ele_count[ G ]>
-             element_size;
-        auto i = 0;
+            element_size;
 
         u64  BODY_Size = G_alloc( element_size, Grp_elements<G>{} );
         u64  Size = ( sizeof( pointer_type<G>::HEADER ) + BODY_Size );
@@ -373,6 +386,7 @@ namespace DS
             reinterpret_cast<pointer_type<G> *>( allocator.allocate( Size ) );
         return new ( ptr ) pointer_type<G>( Size, element_size );
       }
+
       void Dealloc( auto &Data )
       {
         auto sz = Data->HEADER.Body_size;
@@ -403,6 +417,7 @@ namespace DS
             ->template Acess_Size<
                 MG_processing::design_info::ele_index_map[ Index ].index>();
       }
+
       // a potential bug
       // TODO: repair return type
       template <u64 Index>
@@ -428,6 +443,7 @@ namespace DS
                 MG_processing::design_info::ele_index_map[ Index ].group>()
             ->HEADER.Metadata.Common_Data;
       }
+
       Multi_Group_Data_Structure_Design()
       {
         [ & ]<u64... i>( std::integer_sequence<u64, i...> )
@@ -437,9 +453,9 @@ namespace DS
             MG_processing::design_info::group_count>{} );
         ( ( MG_Base<Base_Types>::Initialize() ), ... );
       }
+
       ~Multi_Group_Data_Structure_Design()
       {
-
         [ & ]<u64... i>( std::integer_sequence<u64, i...> )
         {
           ( Dealloc( Data_Structure_Array.template at<i>() ), ... );
@@ -449,5 +465,4 @@ namespace DS
       }
     };
   };
-
 } // namespace DS

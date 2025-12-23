@@ -23,10 +23,10 @@ using u128 = unsigned __int128;
 #endif
 
 // signed  integer  variants
-using s8 = std::int8_t;
-using s16 = std::int16_t;
-using s32 = std::int32_t;
-using s64 = std::int64_t;
+using i8 = std::int8_t;
+using i16 = std::int16_t;
+using i32 = std::int32_t;
+using i64 = std::int64_t;
 #if GCC
 using s128 = __int128;
 #endif
@@ -50,4 +50,4 @@ using f32 = float;
 using f64 = double;
 using f128 = long double;
 #endif
-using SZ = std::size_t;
+using sz = std::size_t;

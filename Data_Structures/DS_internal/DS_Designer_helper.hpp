@@ -55,7 +55,7 @@ namespace DS
         // each elements group
         auto ele_count = Per_group_ele_count();
         std::array<u64, Total_element_count()> table;
-        for ( auto x = 0, y = 0; x < table.size(); x++ )
+        for ( sz x = 0, y = 0; x < table.size(); x++ )
         {
           if ( ele_count[ y ] == 0 )
           {
@@ -71,7 +71,7 @@ namespace DS
         std::array<u64, sizeof...( Base_Types )> table;
         auto ele_count = Per_group_ele_count();
         u64  offset = 0;
-        for ( auto j = 0; j < ele_count.size(); j++ )
+        for ( sz j = 0; j < ele_count.size(); j++ )
         {
           offset += ele_count[ j ];
           table[ j ] = offset;
@@ -83,7 +83,7 @@ namespace DS
       {
         auto table = Per_element_group_table();
         auto pre_sum = Pre_sum_table();
-        s64  prev_tables = table[ i ];
+        i64  prev_tables = table[ i ];
         prev_tables = prev_tables - 1;
         u64 index = 0;
         u64 offset = 0;
@@ -107,7 +107,7 @@ namespace DS
       {
         std::array<gi, Total_element_count()> table;
         auto gtable = Per_element_group_table();
-        for ( auto i = 0; i < table.size(); i++ )
+        for ( sz i = 0; i < table.size(); i++ )
         {
           table[ i ].group = gtable[ i ];
           table[ i ].index = ele_index( i );

@@ -35,8 +35,12 @@ namespace TS
   struct group_info
   {
     static const u64 E_count = sizeof...( T );
+    /**
+     *
+     * @tparam N
+     */
     template <u64 N>
-    using Type = std::tuple_element<N, std::tuple<T...>>::type;
+    using Type = std::__tuple_element_t<N, std::tuple<T...>>;
     using C_Type = Common_Data;
   };
 
@@ -45,7 +49,7 @@ namespace TS
   {
     static const u64 E_count = sizeof...( T );
     template <u64 N>
-    using Type = std::tuple_element<N, std::tuple<T...>>::type;
+    using Type = std::tuple_element_t<N, std::tuple<T...>>;
     static auto map = map_arr;
   };
 

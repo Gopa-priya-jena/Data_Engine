@@ -48,3 +48,5 @@ if eval "$cmd"; then
 else
   echo -e "${BOLD_RED}CMAKE FAILED\n${NC}"
 fi
+
+./Test/main
