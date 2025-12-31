@@ -10,8 +10,6 @@ void prnt( u64 index, const auto &ref )
 template <u64... I>
 inline void loop( auto &d, std::index_sequence<I...> )
 {
-  //  Trace_
-
   ( ( d.template Type<I>::data() = I, //
       prnt( I, d.template Type<I>::data() ) ),
     ... );

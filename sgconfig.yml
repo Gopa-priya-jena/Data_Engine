@@ -1,0 +1,5 @@
+# sgconfig.yml
+# ruleDirs:
+# - rules
+languageGlobs:
+  cpp: ["*.cc", "*.cp", "*.cxx", "*.h"]
