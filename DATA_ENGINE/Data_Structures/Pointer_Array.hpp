@@ -1,6 +1,6 @@
 #pragma once
-#include <TYPE.hpp>
-#include <common_utilities/Type_Group.hpp>
+#include <Basic_Type.hpp>
+#include <Data_Structures/common_utilities/Type_Group.hpp>
 #include <type_traits>
 
 namespace DS

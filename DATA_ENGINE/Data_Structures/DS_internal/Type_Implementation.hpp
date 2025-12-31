@@ -1,7 +1,7 @@
 
 #pragma once
-#include <DS_internal/DS_Designer_helper.hpp>
-#include <TYPE.hpp>
+#include <Basic_Type.hpp>
+#include <Data_Structures/DS_internal/DS_Designer_helper.hpp>
 #include <type_traits>
 namespace DS
 {

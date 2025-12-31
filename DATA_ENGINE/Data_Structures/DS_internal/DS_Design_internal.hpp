@@ -1,11 +1,11 @@
 #pragma once
-#include <DS_internal/DS_constrains.hpp>
-#include <DS_internal/DS_internal.hpp>
-#include <Pointer_Array.hpp>
+#include <Data_Structures/DS_internal/DS_constrains.hpp>
+#include <Data_Structures/DS_internal/DS_internal.hpp>
+#include <Data_Structures/Pointer_Array.hpp>
+#include <Data_Structures/common_utilities/Refernce_Types.hpp>
+#include <Data_Structures/common_utilities/Type_Group.hpp>
+#include <Data_Structures/common_utilities/common.hpp>
 #include <array>
-#include <common_utilities/Refernce_Types.hpp>
-#include <common_utilities/Type_Group.hpp>
-#include <common_utilities/common.hpp>
 #include <cstddef>
 #include <type_traits>
 #include <utility>

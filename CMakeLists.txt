@@ -10,5 +10,5 @@ if(CCACHE_FOUND)
   message("CCACHE FOUND")
 endif()
 
-include_directories(BEFORE ${CMAKE_CURRENT_SOURCE_DIR}/Data_Structures/)
+include_directories(BEFORE ${CMAKE_CURRENT_SOURCE_DIR}/DATA_ENGINE/)
 add_subdirectory(Test)

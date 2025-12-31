@@ -1,5 +1,4 @@
 #include "testbed.hpp"
-#include <TYPE.hpp>
 #include <iostream>
 #include <utility>
 

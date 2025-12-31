@@ -1,5 +1,5 @@
 #pragma once
-#include <DS_internal/DS_Design_internal.hpp>
+#include <Data_Structures/DS_internal/DS_Design_internal.hpp>
 #include <memory>
 namespace DS
 {
